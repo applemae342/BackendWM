@@ -74,3 +74,4 @@ router.delete('/delete/:truckId', async (req, res) => {
 });
 
 module.exports = router;
+
