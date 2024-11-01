@@ -6,10 +6,10 @@ const bcrypt = require('bcrypt');
 // Route to create a new user
 router.post('/', async (req, res) => {
     try {
-        const { firstname, lastname, address, contactNumber, username, email, password, role,routesID } = req.body;
+        const { firstname, lastname, address, contactNumber, username, email, password, role } = req.body;
 
         // Validate incoming data
-        if (!firstname || !lastname || !address || !contactNumber || !username || !email || !password || !role|| !routesID) {
+        if (!firstname || !lastname || !address || !contactNumber || !username || !email || !password || !role) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -28,10 +28,9 @@ router.post('/', async (req, res) => {
             username,
             email,
             password,
-            role,
-            routesID
+            role
         });
-
+console.log(newUser)
         // Save the new user to the database
         await newUser.save();
 

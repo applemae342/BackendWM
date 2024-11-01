@@ -12,7 +12,11 @@ const routesSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter route name."]
   },
-  
+
+  coveredPlaces: {
+    type: String,
+    required: [true, "Please enter covered places."]
+  },
  
   
 });

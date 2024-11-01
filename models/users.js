@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, "Please enter an email address"],
     unique: true
   },
   password: {
@@ -42,12 +41,8 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter a role"],
     enum: ["resident", "admin", "collector"],
     default: "resident"
-  },
-  routesID:{
-    type:String,
-    ref:'Routes',
-    required:[true, "Please enter a routes ID"]
   }
+
   
 });
 

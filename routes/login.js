@@ -28,8 +28,9 @@ router.post('/', async (req, res) => {
 
         // Successful login
         return res.status(200).json({
-            message: 'Login successful',
+            message: 'Login successful',    
             user: {
+                userID:user.userId,
                 username: user.username,
                 password: user.password,  // Returning the password (ensure this is secure)
                 routesID: user.routesID,  // Assuming your User model has a 'routesID' field

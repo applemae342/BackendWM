@@ -24,6 +24,24 @@ router.get('/getAll', async (req, res) => {
     }
 });
 
+// Get a resident's status by userID
+router.get('/getByUserID/:userID', async (req, res) => {
+    const { userID } = req.params; // Get userID from the URL
+
+    try {
+        const residentStatus = await ResidentStatus.findOne({ userID }); // Find status by userID
+
+        if (!residentStatus) {
+            return res.status(404).json({ message: "Resident status not found" });
+        }
+
+        res.status(200).json(residentStatus);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Update a resident's status using userID
 router.put('/update/:userID', async (req, res) => {
     const { userID } = req.params; // Get userID from the URL

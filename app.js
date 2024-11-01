@@ -30,12 +30,14 @@ const register=require('./routes/register')
 const userslist=require('./routes/userslist')
 const announcements=require('./routes/announcement')
 const routesname=require('./routes/routesName')
+const truckName=require('./routes/registerTruck')
 app.use('/API/Status', residents_statusRoutes);
 app.use('/API/login',login)
 app.use('/API/register',register)
 app.use('/API/users',userslist)
 app.use('/API/Announcements',announcements)
 app.use('/API/Route',routesname)
+app.use('/API/RegisterTruck',truckName)
 
 
 app.listen(8000, () => {
