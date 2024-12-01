@@ -31,6 +31,9 @@ const userslist=require('./routes/userslist')
 const announcements=require('./routes/announcement')
 const routesname=require('./routes/routesName')
 const truckName=require('./routes/registerTruck')
+const loginTruck=require('./routes/loginTruck')
+const flag=require('./routes/LocationFlag')
+const history=require('./routes/recordHistory')
 app.use('/API/Status', residents_statusRoutes);
 app.use('/API/login',login)
 app.use('/API/register',register)
@@ -38,6 +41,9 @@ app.use('/API/users',userslist)
 app.use('/API/Announcements',announcements)
 app.use('/API/Route',routesname)
 app.use('/API/RegisterTruck',truckName)
+app.use('/API/loginTruck',loginTruck)
+app.use('/API/flag',flag)
+app.use('/API/history',history)
 
 
 app.listen(8000, () => {

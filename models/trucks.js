@@ -12,6 +12,10 @@ const truckSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a plate nmuber"]
   },
+  username: {
+    type: String,
+    required: [true, "Please enter a user name"]
+  },
   description: {
     type: String,
     required: [true, "Please enter a description"]
