@@ -41,7 +41,15 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please enter a role"],
     enum: ["resident", "admin", "collector"],
     default: "resident"
-  }
+  },
+  otp: {
+    type: String,
+    
+},
+otpSentAt: {
+    type: Date,
+}
+
 
   
 });
