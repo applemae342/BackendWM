@@ -62,31 +62,89 @@ router.post('/send-email', async (req, res) => {
 // Route to verify OTP
 router.post('/verify-otp', async (req, res) => {
     try {
-        const { email, otp, newPassword } = req.body;
+        const { email, otp } = req.body;
 
-        if (!email || !otp || !newPassword)
-            return res.status(400).json({ error: 'Email, OTP, and new password are required' });
+        if (!email || !otp) {
+            return res.status(400).json({ error: 'Email and OTP are required' });
+        }
 
         const user = await User.findOne({ email });
-        if (!user) return res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
 
-        if (!user.otp || !user.otpSentAt || Date.now() > user.otpSentAt)
-            return res.status(400).json({ error: 'OTP has expired' });
+        // Check if OTP has expired
+        if (!user.otp || !user.otpSentAt || Date.now() > user.otpSentAt) {
+            return res.status(400).json({ error: 'OTP has expired or is invalid' });
+        }
 
         const isOtpValid = await bcrypt.compare(otp, user.otp);
-        if (!isOtpValid) return res.status(400).json({ error: 'Invalid OTP' });
+        if (!isOtpValid) {
+            return res.status(400).json({ error: 'Invalid OTP' });
+        }
 
-        user.password = await bcrypt.hash(newPassword, 10);
-        user.otp = undefined;
-        user.otpSentAt = undefined;
-
+        // OTP is valid
+        user.otp = undefined; // Clear OTP after successful verification
+        user.otpSentAt = undefined; // Clear OTP timestamp
         await user.save();
 
-        res.status(200).json({ success: true, message: 'Password changed successfully' });
+        res.status(200).json({ success: true, message: 'OTP verified successfully' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to verify OTP' });
     }
 });
+
+
+// Password change route
+// Password change route
+router.post('/password-change', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // Check for missing fields
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Email and password are required' });
+        }
+
+        // Find the user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Log the old hashed password (before change)
+        console.log('Old hashed password:', user.password);
+
+        // Validate password length
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'Password must be at least 6 characters' });
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Log the new hashed password
+        console.log('New hashed password:', hashedPassword);
+
+        // Update the user's password
+        user.password = hashedPassword;
+
+        // Save the updated user
+        await user.save();
+
+        // Fetch the updated user to ensure the password is saved
+        const updatedUser = await User.findById(user._id);
+        console.log('Updated user password (hashed):', updatedUser.password);
+
+        // Respond with success message
+        res.status(200).json({ success: true, message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Error in password change:', error);
+        res.status(500).json({ error: 'Failed to change password' });
+    }
+});
+
+
 
 module.exports = router;

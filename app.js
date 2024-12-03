@@ -36,7 +36,6 @@ const loginTruck=require('./routes/loginTruck')
 const flag=require('./routes/LocationFlag')
 const history=require('./routes/recordHistory')
 const otpRoutes = require('./routes/otp')
-const verifyOtp = require('./routes/otp')
 
 
 app.use('/API/Status', residents_statusRoutes);
@@ -50,7 +49,6 @@ app.use('/API/loginTruck',loginTruck)
 app.use('/API/flag',flag)
 app.use('/API/history',history)
 app.use('/API/otp', otpRoutes)
-app.use('/API/otp', verifyOtp)
 
 
 app.listen(8000, () => {
