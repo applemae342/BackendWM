@@ -6,18 +6,14 @@ const bcrypt = require('bcrypt');
 // Route to create a new user
 router.post('/', async (req, res) => {
     try {
-        const { firstname, lastname, address, contactNumber, username, email, password, role } = req.body;
+        const { firstname, lastname, address, contactNumber, username,  password ,reset} = req.body;
 
         // Validate incoming data
-        if (!firstname || !lastname || !address || !contactNumber || !username || !email || !password || !role) {
+        if (!firstname || !lastname || !address || !contactNumber || !username || !password ) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // Check if the user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User with this email already exists' });
-        }
+     
 
         // Create a new user with a unique userId (auto-generated)
         const newUser = new User({
@@ -26,9 +22,8 @@ router.post('/', async (req, res) => {
             address,
             contactNumber,
             username,
-            email,
-            password,
-            role
+            reset,
+            password
         });
 console.log(newUser)
         // Save the new user to the database

@@ -18,30 +18,39 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: [true, "Please enter a username"]
-  },
-  email: {
-    type: String,
+    required: [true, "Please enter a username"],
     unique: true
+
   },
   password: {
     type: String,
-    required: [true, "Please enter a password"]
-  },
+    required: [true, "Please enter a password"],
+    minlength: [8, "Password must be at least 8 characters long."]
+},
+
+
   contactNumber: {
-    type: String,
-    required: [true, "Please enter a contact number"]
-  },
+    type: Number,
+    required: [true, "Please enter a contact number"],
+    unique: true,
+    validate: {
+        validator: function (v) {
+            return /^\d{11}$/.test(v.toString()); // Converts the number to a string and checks for exactly 11 digits
+        },
+        message: "Contact number must be exactly 11 digits."
+    }
+},
+
   address: {
     type: String,
     required: [true, "Please enter an address"]
   },
-  role: {
+  reset: {
     type: String,
-    required: [true, "Please enter a role"],
-    enum: ["resident", "admin", "collector"],
-    default: "resident"
-  }
+    required: [true, "Please enter resett status."],
+    enum: ["yes", "no"],
+    default: "no"
+  },
 
   
 });

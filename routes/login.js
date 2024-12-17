@@ -26,21 +26,34 @@ router.post('/', async (req, res) => {
             return res.status(401).json({ message: 'Invalid username or password' });
         }
 
+        // Save user data in session
+        req.session.user = {
+            userID: user.userId,
+            username: user.username,
+            reset: user.reset,
+        };
+
         // Successful login
         return res.status(200).json({
-            message: 'Login successful',    
-            user: {
-                userID:user.userId,
-                username: user.username,
-                password: user.password,  // Returning the password (ensure this is secure)
-                routesID: user.routesID,  // Assuming your User model has a 'routesID' field
-                role: user.role,           // Assuming your User model has a 'role' field
-            },
+            message: 'Login successful',
+            user: req.session.user, // Returning session data
         });
     } catch (error) {
         console.error('Login error:', error);
         return res.status(500).json({ message: 'Server error. Please try again later.' });
     }
+});
+
+router.post('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Logout error:', err);
+            return res.status(500).json({ message: 'Could not log out. Please try again.' });
+        }
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        console.log('Logout successful'); // Debugging
+        return res.status(200).json({ message: 'Logout successful' });
+    });
 });
 
 module.exports = router;

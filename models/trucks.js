@@ -22,15 +22,19 @@ const truckSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please enter a password"]
-  },
+    required: [true, "Please enter a password"]},
+
   routesID: {
     type: String, // Change to String to match UUID format in User model
     ref: 'Routes',  // Reference the 'userId' field in User model
     required: [true, "Please enter a route ID"]
-  }
-
-  
+  },
+  reset: {
+    type: String,
+    required: [true, "Please enter reset status."],
+    enum: ["yes", "no"],
+    default: "no"
+  },
 });
 
 // Hash the password before saving the user
